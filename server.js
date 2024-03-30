@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 
 import { connectDB } from "./db/connectDB.js";
 import userRoutes from "./routes/userRoutes.js";
+import postRoutes from "./routes/postRoutes.js";
 
 dotenv.config();
 
@@ -19,5 +20,6 @@ app.use(cookieParser());
 
 // routes
 app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
 
 app.listen(port, () => console.log(`Server is listening at port ${port}`));

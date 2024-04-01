@@ -18,6 +18,6 @@ router.post("/login", login);
 router.post("/logout", logout);
 
 router.post("/follow/:id", authMiddleware, followUnfollow);
-router.post("/update/:id", authMiddleware, update);
+router.put("/update/:id", authMiddleware, update);
 
 export default router;

@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
+import { v2 as cloudinary } from "cloudinary";
 
 import User from "../models/userModel.js";
 import { generateTokenAndSetCookie } from "../utils/generateTokenAndSetCookie.js";
@@ -120,7 +121,7 @@ export const logout = async (req, res) => {
 export const update = async (req, res) => {
   const { name, email, username, password, bio } = req.body;
 
-  let profilePic;
+  let { profilePic } = req.body;
 
   const userId = req.user._id;
 
@@ -138,6 +139,17 @@ export const update = async (req, res) => {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
       user.password = hashedPassword;
+    }
+
+    if (profilePic) {
+      if (user.profilePic) {
+        await cloudinary.uploader.destroy(
+          user.profilePic.split("/").pop().split(".")[0]
+        );
+
+        const uploadedResponse = await cloudinary.uploader.upload(profilePic);
+        profilePic = uploadedResponse.secure_url;
+      }
     }
 
     user.name = name || user.name;
@@ -159,12 +171,8 @@ export const followUnfollow = async (req, res) => {
   try {
     const { id } = req.params;
 
-    console.log("name", req.user.name);
-
     const userToModify = await User.findById(id);
     const currentUser = await User.findById(req.user._id);
-
-    console.log("userToModify", userToModify);
 
     if (!userToModify || !currentUser) {
       return res.status(400).json({ error: "User not found" });

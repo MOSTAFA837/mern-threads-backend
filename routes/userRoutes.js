@@ -6,12 +6,14 @@ import {
   followUnfollow,
   update,
   getUserProfile,
+  getSuggestedUser,
 } from "../controllers/userController.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
 router.get("/profile/:query", getUserProfile);
+router.get("/suggested", authMiddleware, getSuggestedUser);
 
 router.post("/signup", signup);
 router.post("/login", login);

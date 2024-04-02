@@ -6,6 +6,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { connectDB } from "./db/connectDB.js";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
+import messageRoutes from "./routes/messageRoutes.js";
 
 dotenv.config();
 
@@ -36,5 +37,6 @@ app.use((err, req, res, next) => {
 // routes
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/messages", messageRoutes);
 
 app.listen(port, () => console.log(`Server is listening at port ${port}`));

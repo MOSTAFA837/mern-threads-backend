@@ -71,7 +71,7 @@ async function getMessages(req, res) {
 
     const messages = await Message.find({
       conversationId: conversation._id,
-    }).sort({ createdAt: -1 });
+    }).sort({ createdAt: 1 });
 
     res.status(200).json(messages);
   } catch (error) {
@@ -90,16 +90,12 @@ async function getConversations(req, res) {
       select: "username profilePic",
     });
 
-    console.log(conversations);
-
     // remove the current user from the participants array
     conversations.forEach((conversation) => {
       conversation.participants = conversation.participants.filter(
         (participant) => participant._id.toString() !== currentUser.toString()
       );
     });
-
-    console.log(conversations);
 
     res.status(200).json(conversations);
   } catch (error) {

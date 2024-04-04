@@ -7,12 +7,11 @@ import { connectDB } from "./db/connectDB.js";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
+import { app, server } from "./socket/socket.js";
 
 dotenv.config();
 
 connectDB();
-
-const app = express();
 
 const port = process.env.PORT || 5000;
 
@@ -39,4 +38,4 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/messages", messageRoutes);
 
-app.listen(port, () => console.log(`Server is listening at port ${port}`));
+server.listen(port, () => console.log(`Server is listening at port ${port}`));
